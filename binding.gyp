@@ -12,6 +12,7 @@
       'cflags_cc': ['-std=c++20'],
       'xcode_settings': {
         'OTHER_CPLUSPLUSFLAGS': ['-std=c++20', '-stdlib=libc++'],
+        'OTHER_LDFLAGS': ['-Wl,-headerpad_max_install_names'],
       },
       'msvs_settings': {
         'VCCLCompilerTool': {
