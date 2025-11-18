@@ -7,8 +7,8 @@ on:
   workflow_dispatch: {}
 
 env:
-  NODE_BUILD_CMD: npx --no-install prebuild -r node -t 20.0.0 -t 22.0.0 -t 23.0.0 -t 24.0.0 --include-regex 'better_sqlite3.node$'
-  ELECTRON_BUILD_CMD: npx --no-install prebuild -r electron -t 29.0.0 -t 30.0.0 -t 31.0.0 -t 32.0.0 -t 33.0.0 -t 34.0.0 -t 35.0.0 -t 36.0.0 -t 37.0.0 -t 38.0.0 -t 39.0.0 --include-regex 'better_sqlite3.node$'
+  NODE_BUILD_CMD: npx --no-install prebuild -r node -t 20.0.0 -t 22.0.0 --include-regex 'better_sqlite3.node$' --tag v12.4.4
+  ELECTRON_BUILD_CMD: npx --no-install prebuild -r electron -t 39.0.0 --include-regex 'better_sqlite3.node$' --tag v12.4.4
 
 jobs:
   prebuild:
