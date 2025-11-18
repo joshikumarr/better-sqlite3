@@ -12,9 +12,9 @@ on:
 
 env:
   # Node.js versions (Node 22 = v127)
-  NODE_BUILD_CMD: npx --no-install prebuild -r node -t 20.0.0 -t 22.0.0 -t 23.0.0 -t 24.0.0 --include-regex 'better_sqlite3.node$' --tag v12.4.4
+  NODE_BUILD_CMD: npx --no-install prebuild -r node -t 20.0.0 -t 22.0.0 --include-regex 'better_sqlite3.node$' --tag v12.4.4
   # Electron versions (Electron 39 = v140)
-  ELECTRON_BUILD_CMD: npx --no-install prebuild -r electron -t 29.0.0 -t 30.0.0 -t 31.0.0 -t 32.0.0 -t 33.0.0 -t 34.0.0 -t 35.0.0 -t 36.0.0 -t 37.0.0 -t 38.0.0 -t 39.0.0 --include-regex 'better_sqlite3.node$' --tag v12.4.4
+  ELECTRON_BUILD_CMD: npx --no-install prebuild -r electron -t 39.0.0 --include-regex 'better_sqlite3.node$' --tag v12.4.4
 
 jobs:
   # Create release if manually triggered
@@ -42,14 +42,13 @@ jobs:
             better-sqlite3 prebuilds with Conveyor headerpad flags for macOS code signing.
 
             Includes prebuilds for:
-            - Node.js 20, 22, 23, 24
-            - Electron 29-39
+            - Node.js 20, 22
+            - Electron 39
 
             Platforms:
             - macOS arm64 (Apple Silicon)
             - macOS x64 (Intel)
-            - Windows x64, arm64, ia32
-            - Linux x64
+            - Windows x64
           draft: false
           prerelease: false
         env:
@@ -91,9 +90,9 @@ jobs:
       - name: Build Electron prebuilds
         run: ${{ env.ELECTRON_BUILD_CMD }} -u ${{ secrets.GITHUB_TOKEN }}
 
-  # Windows (x64, arm64, ia32)
+  # Windows x64
   prebuild-windows:
-    name: Windows
+    name: Windows x64
     runs-on: windows-2022
     needs: [create-release]
     if: always() && (needs.create-release.result == 'success' || needs.create-release.result == 'skipped')
@@ -104,30 +103,8 @@ jobs:
           node-version: 20
       - run: pip.exe install setuptools
       - run: npm install --ignore-scripts
-      - name: Build Node.js prebuilds (x64)
-        run: ${{ env.NODE_BUILD_CMD }} -u ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Electron prebuilds (x64)
-        run: ${{ env.ELECTRON_BUILD_CMD }} -u ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Node.js prebuilds (ia32)
-        run: ${{ env.NODE_BUILD_CMD }} --arch ia32 -u ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Electron prebuilds (ia32)
-        run: ${{ env.ELECTRON_BUILD_CMD }} --arch ia32 -u ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Node.js prebuilds (arm64)
-        run: ${{ env.NODE_BUILD_CMD }} --arch arm64 -u ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Electron prebuilds (arm64)
-        run: ${{ env.ELECTRON_BUILD_CMD }} --arch arm64 -u ${{ secrets.GITHUB_TOKEN }}
-
-  # Linux x64
-  prebuild-linux-x64:
-    name: Linux x64
-    runs-on: ubuntu-latest
-    container: node:20-bullseye
-    needs: [create-release]
-    if: always() && (needs.create-release.result == 'success' || needs.create-release.result == 'skipped')
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm install --ignore-scripts
       - name: Build Node.js prebuilds
         run: ${{ env.NODE_BUILD_CMD }} -u ${{ secrets.GITHUB_TOKEN }}
       - name: Build Electron prebuilds
         run: ${{ env.ELECTRON_BUILD_CMD }} -u ${{ secrets.GITHUB_TOKEN }}
+
