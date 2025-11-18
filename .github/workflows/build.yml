@@ -39,6 +39,13 @@ jobs:
       - run: ${{ env.NODE_BUILD_CMD }} -u ${{ secrets.GITHUB_TOKEN }}
       
       - run: ${{ env.ELECTRON_BUILD_CMD }} -u ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload prebuilds as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prebuilds-${{ matrix.os }}
+          path: prebuilds/
+          
   upload-release-assets:
     if: github.event_name == 'workflow_dispatch'
     name: Upload Build Assets to Release
@@ -55,7 +62,7 @@ jobs:
       - name: Upload release artifacts to GitHub Releases
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.event.release.tag_name }}
+          tag_name: v12.4.4
           files: ./release-artifacts/**/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
