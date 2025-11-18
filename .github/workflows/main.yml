@@ -131,4 +131,3 @@ jobs:
         run: ${{ env.NODE_BUILD_CMD }} -u ${{ secrets.GITHUB_TOKEN }}
       - name: Build Electron prebuilds
         run: ${{ env.ELECTRON_BUILD_CMD }} -u ${{ secrets.GITHUB_TOKEN }}
-```
